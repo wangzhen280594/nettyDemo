@@ -1,7 +1,9 @@
 package com.example.netty.server;
 
+import com.example.netty.message.ChatRequestMessage;
 import com.example.netty.protocol.MessageCodecSharable;
 import com.example.netty.protocol.ProcotolFrameDecoder;
+import com.example.netty.server.handler.ChatRequestMessageHandler;
 import com.example.netty.server.handler.LoginRequestMessageHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -20,6 +22,7 @@ public class ChatServer {
         LoggingHandler LOGGING_HANDLER=new LoggingHandler();
         MessageCodecSharable MESSAGE_CODEC=new MessageCodecSharable();
         LoginRequestMessageHandler LOGIN_HANDLER=new LoginRequestMessageHandler();
+        ChatRequestMessageHandler CHAT_HANDLER=new ChatRequestMessageHandler();
 
         try{
             ServerBootstrap serverBootstrap=new ServerBootstrap();
@@ -32,6 +35,7 @@ public class ChatServer {
                     ch.pipeline().addLast(LOGGING_HANDLER);
                     ch.pipeline().addLast(MESSAGE_CODEC);
                     ch.pipeline().addLast(LOGIN_HANDLER);
+                    ch.pipeline().addLast(CHAT_HANDLER);
                 }
             });
             serverBootstrap.bind(8080).sync().channel().closeFuture().sync();
